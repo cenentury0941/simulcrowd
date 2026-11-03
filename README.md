@@ -1,6 +1,7 @@
-# SimulCrowd
+# SimulCrowd Docs
 
-Single-page Next.js documentation site, ready to deploy on Vercel.
+Single-page Next.js technical documentation for SimulCrowd — overview, workflow,
+tech stack, architecture, Omniverse usage, and future prospects.
 
 ## Getting Started
 
@@ -13,4 +14,5 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy
 
-Import this repository in [Vercel](https://vercel.com/new). The default Next.js settings work out of the box.
+Import this repository in [Vercel](https://vercel.com/new). The default Next.js
+settings work out of the box.
