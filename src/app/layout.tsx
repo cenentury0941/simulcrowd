@@ -21,10 +21,10 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SimulCrowd — Technical Documentation",
+  title: "SimulCrowd — Documentation",
   description:
-    "Technical overview of SimulCrowd: Omniverse Kit crowd simulation, fire perception, and SLM-driven agent decisions for airport terminal design.",
-};
+    "SimulCrowd helps airport teams simulate how people move through a terminal and evacuate in a fire — built on NVIDIA Omniverse.",
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

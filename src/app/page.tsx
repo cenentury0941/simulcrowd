@@ -2,6 +2,8 @@ import Image from "next/image";
 
 const NAV = [
   { href: "#overview", label: "Overview" },
+  { href: "#audience", label: "Who It's For" },
+  { href: "#questions", label: "What You Learn" },
   { href: "#workflow", label: "Workflow" },
   { href: "#tech-stack", label: "Tech Stack" },
   { href: "#how-it-works", label: "How It Works" },
@@ -28,16 +30,16 @@ export default function Home() {
             Simul<span>Crowd</span>
           </h1>
           <p className="hero-lead">
-            Technical documentation for an Omniverse Kit application that
-            simulates per-person fire evacuation in airport terminals — NavMesh
-            motion, line-of-sight perception, and batched SLM decisions.
+            See how people move through an airport terminal — and how each
+            person reacts when a fire starts — while the design can still
+            change.
           </p>
           <div className="cta-row">
             <a className="cta cta-primary" href="#overview">
               Read the overview
             </a>
-            <a className="cta cta-ghost" href="#how-it-works">
-              Architecture
+            <a className="cta cta-ghost" href="#questions">
+              What you learn
             </a>
           </div>
         </div>
@@ -58,78 +60,162 @@ export default function Home() {
           <p className="section-kicker">01 — Overview</p>
           <h2 className="section-title">What SimulCrowd is</h2>
           <p className="section-lead">
-            SimulCrowd helps airport design teams load a terminal layout, fill
-            it with simulated people, and watch how each person behaves when a
-            fire starts — while seating, corridors, and exits can still change.
+            SimulCrowd is a 3D simulation built on NVIDIA Omniverse. Load a
+            terminal layout, fill it with simulated people, start a fire, and
+            watch who notices, which exits they choose, and where the crowd
+            slows down.
           </p>
           <div className="prose-block">
             <p>
-              The product is an{" "}
-              <strong>NVIDIA Omniverse / Kit</strong> application (
-              <code>crowd.sim</code>) with a custom extension,{" "}
-              <code>crowd.agents</code>. The 3D app owns the venue, navigation,
-              vision, and operator UI. High-level intents — sit, walk to a seat,
-              or evacuate — come from a pluggable decision engine: rule-based by
-              default, or a remote small language model over HTTP.
+              Unlike a scripted “everyone evacuate” demo, each person decides
+              from what they can see. Someone facing a wall may keep sitting;
+              someone with a clear view of the fire may head for an exit.
+              That per-person behavior is the core idea — useful in design
+              reviews where seating, corridors, and exits are still negotiable.
             </p>
             <p>
-              The design goal is independent per-person reasoning under
-              pressure: each agent reacts from what it can see, not from a
-              global force-evacuate switch. That same scheduler and batch API
-              are built to grow from a handful of agents to larger crowds.
+              The 3D application handles the terminal, walking paths, vision,
+              and controls. Optional AI assists with each person’s next choice
+              (go to a seat, wait, or leave). If AI is unavailable, simple
+              rules keep the session running so stakeholders are not blocked.
             </p>
           </div>
         </section>
 
-        <section id="workflow" className="doc-section">
-          <p className="section-kicker">02 — Workflow</p>
-          <h2 className="section-title">Operator loop</h2>
+        <section id="audience" className="doc-section">
+          <p className="section-kicker">02 — Who it's for</p>
+          <h2 className="section-title">Teams that shape terminal safety</h2>
           <p className="section-lead">
-            A typical terminal design session follows a fixed authoring and
-            simulation path inside the Crowd Sim panel.
+            SimulCrowd is aimed at people who need a shared picture of crowd
+            flow before construction or renovation locks the layout in.
+          </p>
+          <ul className="prospect-list">
+            <li>
+              <h3>Airport operators and terminal owners</h3>
+              <p>
+                Test concourse, gate, and exit plans before a renovation or new
+                build, and compare options with stakeholders in the room.
+              </p>
+            </li>
+            <li>
+              <h3>Aviation architects and designers</h3>
+              <p>
+                Validate circulation and fire egress while seating and corridor
+                geometry can still be changed — not after concrete is poured.
+              </p>
+            </li>
+            <li>
+              <h3>Life-safety, operations, and training</h3>
+              <p>
+                Rehearse terminal evacuation without disrupting a live airport,
+                and give insurers, consultants, or agencies a concrete scenario
+                to discuss.
+              </p>
+            </li>
+          </ul>
+        </section>
+
+        <section id="questions" className="doc-section">
+          <p className="section-kicker">03 — What you learn</p>
+          <h2 className="section-title">Questions a session can answer</h2>
+          <p className="section-lead">
+            A short run is less about perfect prediction and more about making
+            layout risks visible early.
           </p>
           <ol className="flow-list">
             <li>
               <span className="flow-index">01</span>
               <div>
-                <h3>Open Venue</h3>
+                <h3>Do people clear the space in time?</h3>
                 <p>
-                  Load a terminal stage from <code>venues/</code> (for example{" "}
-                  <code>Airport.usdz</code>). Seats, exits, spawn plane, and
-                  nav markers follow a naming contract.
+                  Watch how long it takes for the crowd to reach exits after
+                  fire is noticed — and where movement stalls.
                 </p>
               </div>
             </li>
             <li>
               <span className="flow-index">02</span>
               <div>
-                <h3>Generate NavMesh</h3>
+                <h3>Which exits get used?</h3>
                 <p>
-                  Bake walkable surfaces via{" "}
-                  <code>omni.anim.navigation</code>. Nav markers become Include
-                  Volumes under <code>/World/NavVolumes</code>.
+                  See whether people overload one door while another stays
+                  underused, based on what each person can see from their seat
+                  or path.
                 </p>
               </div>
             </li>
             <li>
               <span className="flow-index">03</span>
               <div>
-                <h3>Spawn Agents</h3>
+                <h3>Where does the layout fight the crowd?</h3>
                 <p>
-                  Place agents on the spawn plane, assign unique seats, and
-                  optionally enable the hosted SLM (Check Ready → Use hosted
-                  SLM).
+                  Spot pinch points at gates, seating islands, and corridors
+                  that look fine on a floor plan but clog under evacuation.
                 </p>
               </div>
             </li>
             <li>
               <span className="flow-index">04</span>
               <div>
-                <h3>Run → Start Fire → Inspect</h3>
+                <h3>What is one person doing right now?</h3>
                 <p>
-                  Agents walk to seats. Place a fire; only people with clear
-                  FOV and mesh LOS begin evacuating. Click anyone for live
-                  Individual Agent Info and FOV wireframe.
+                  Click anyone to inspect intent, destination, and whether they
+                  have seen the fire — useful when explaining the demo to a
+                  non-simulation audience.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <section id="workflow" className="doc-section">
+          <p className="section-kicker">04 — Workflow</p>
+          <h2 className="section-title">A typical design session</h2>
+          <p className="section-lead">
+            Operators work from a Crowd Sim control panel beside the 3D view.
+            The loop is short enough for a live review.
+          </p>
+          <ol className="flow-list">
+            <li>
+              <span className="flow-index">01</span>
+              <div>
+                <h3>Open a terminal</h3>
+                <p>
+                  Load a 3D airport layout. Seats, exits, and walkable areas are
+                  marked so the simulation knows where people can sit and leave.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="flow-index">02</span>
+              <div>
+                <h3>Build walking paths</h3>
+                <p>
+                  Generate a navigation mesh over floors and corridors so people
+                  can path around furniture and walls instead of walking through
+                  them.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="flow-index">03</span>
+              <div>
+                <h3>Fill the space with people</h3>
+                <p>
+                  Spawn a crowd, assign seats, and optionally connect the AI
+                  decision service. Then run — people walk to their seats like a
+                  boarding or waiting scenario.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="flow-index">04</span>
+              <div>
+                <h3>Start a fire and observe</h3>
+                <p>
+                  Place a fire in the terminal. Only people who can see it begin
+                  to evacuate. Inspect individuals, compare exit choices, and
+                  note where flow slows for the design discussion.
                 </p>
               </div>
             </li>
@@ -137,100 +223,99 @@ export default function Home() {
         </section>
 
         <section id="tech-stack" className="doc-section">
-          <p className="section-kicker">03 — Tech Stack</p>
+          <p className="section-kicker">05 — Tech Stack</p>
           <h2 className="section-title">Layers in the system</h2>
           <p className="section-lead">
-            Simulation stays in Kit. Inference stays outside Kit. The contract
-            between them is a small HTTP API and a frozen intent set.
+            The 3D world and the AI brain stay separate on purpose: rendering
+            and walking stay responsive; reasoning can run on another machine.
           </p>
           <dl className="stack-grid">
             <div className="stack-row">
-              <dt>Runtime</dt>
+              <dt>3D platform</dt>
               <dd>
-                NVIDIA Omniverse Kit · app <code>crowd.sim.kit</code> ·
-                extension <code>crowd.agents</code> (Python)
+                NVIDIA Omniverse Kit — realtime terminal scene, operator UI, and
+                simulation loop
               </dd>
             </div>
             <div className="stack-row">
-              <dt>Scene</dt>
+              <dt>Scene data</dt>
               <dd>
-                USD / USDA / USDC / USDZ venues · seat / exit / spawn /
-                NavMesh naming · viewport inspect + highlight viz
+                OpenUSD terminal models with marked seats, exits, spawn areas,
+                and walkable regions
               </dd>
             </div>
             <div className="stack-row">
               <dt>Navigation</dt>
               <dd>
-                <code>omni.anim.navigation</code> NavMesh bake, path query,
-                waypoint follow, lane bias, agent–agent separation
+                Navigation-mesh pathfinding, waypoint following, lane spacing,
+                and simple crowd separation
               </dd>
             </div>
             <div className="stack-row">
               <dt>Perception</dt>
               <dd>
-                Fire placement · FOV (~210°) · range (~20 m) · sticky memory ·{" "}
-                <code>omni.kit.mesh.raycast</code> line-of-sight
+                Fire placement with field of view, distance limits, memory once
+                seen, and mesh line-of-sight so walls block vision
               </dd>
             </div>
             <div className="stack-row">
               <dt>Decisions</dt>
               <dd>
-                Intents <code>GO_TO_SEAT</code> | <code>EXIT</code> |{" "}
-                <code>IDLE</code> · RuleBased fallback · RemoteSLM batch client
+                High-level choices only: go to seat, exit, or wait — from rules
+                or a remote small language model, with rules as fallback
               </dd>
             </div>
             <div className="stack-row">
-              <dt>SLM service</dt>
+              <dt>AI service</dt>
               <dd>
-                <code>services/slm</code> · Phi-4-mini on Apple Silicon (mlx-lm)
-                or CUDA (transformers) · OpenRouter optional for{" "}
-                <code>/v1/summarize</code>
+                Standalone inference (for example Phi-4-mini on Apple Silicon or
+                a cloud GPU) plus optional plain-language summaries of one
+                person’s status
               </dd>
             </div>
           </dl>
         </section>
 
         <section id="how-it-works" className="doc-section">
-          <p className="section-kicker">04 — How It Works</p>
-          <h2 className="section-title">High-frequency motion, low-frequency reason</h2>
+          <p className="section-kicker">06 — How It Works</p>
+          <h2 className="section-title">Walking every frame, deciding less often</h2>
           <p className="section-lead">
-            Kit advances navigation and perception every frame. The decision
-            engine runs on a much slower cadence — perception-change gated
-            batches rather than one model call per agent per frame.
+            People keep moving smoothly in the 3D view. Smarter choices update
+            on a slower rhythm — when what someone perceives has changed — so
+            the crowd does not freeze waiting on AI.
           </p>
           <div className="diagram" aria-label="Architecture diagram">
-            <pre>{`Airport terminal (USD)
+            <pre>{`Airport terminal (3D layout)
         │
         ▼
 ┌───────────────────────────────┐
-│  SimulCrowd (Omniverse Kit)   │  scene · NavMesh · FOV/LOS · UI
-│  crowd.agents                 │
+│  SimulCrowd (Omniverse)       │  scene · walking · vision · controls
 └───────────────┬───────────────┘
-                │  POST /v1/decide  { agents[] }
+                │  ask AI what each person should do next
                 ▼
 ┌───────────────────────────────┐
-│  SLM service (Mac / CUDA)     │  batched GO_TO_SEAT | EXIT | IDLE
-│  Phi-4-mini (+ summarize)     │
+│  AI decision service          │  go to seat · exit · wait
+│  (laptop GPU or cloud)        │
 └───────────────────────────────┘`}</pre>
           </div>
           <div className="prose-block">
             <p>
-              <strong>Perception</strong> is local and cheap: fire visibility,
-              smoke flags, seat known, nearest exit, at-destination. Only
-              scalars and IDs cross the wire — never meshes or raw transforms.
+              <strong>Perception</strong> stays inside the 3D app: can this
+              person see the fire, do they know their seat, are they already at
+              a destination, which exit is nearest. Compact facts are enough —
+              the AI never needs the full 3D mesh.
             </p>
             <p>
-              <strong>Apply</strong> maps returned intents back onto seats and
-              exits, then NavigationSystem path-follows. If the SLM is offline,
-              times out, or returns bad JSON for one row, the rule engine keeps
-              that tick (or that agent) moving so design reviews are not
-              blocked.
+              <strong>Action</strong> turns those choices back into walking
+              toward a seat or an exit. If the AI service is offline or slow,
+              the rule engine covers that moment so a live design review keeps
+              going.
             </p>
           </div>
           <figure className="split-visual">
             <Image
               src="/evacuation-simulation.jpeg"
-              alt="SimulCrowd evacuation run with agents moving toward exits and Individual Agent Info visible"
+              alt="SimulCrowd evacuation run with agents moving toward exits and individual agent info visible"
               width={1600}
               height={899}
               sizes="(max-width: 1120px) 100vw, 1120px"
@@ -243,66 +328,61 @@ export default function Home() {
         </section>
 
         <section id="omniverse" className="doc-section">
-          <p className="section-kicker">05 — Usage of Omniverse</p>
-          <h2 className="section-title">What Kit owns — and what it never loads</h2>
+          <p className="section-kicker">07 — Usage of Omniverse</p>
+          <h2 className="section-title">The world stays in Omniverse</h2>
           <p className="section-lead">
-            Omniverse is the world simulator and authoring surface. Model
-            weights never enter the Kit process.
+            Omniverse is the shared 3D workspace: the terminal you load, the
+            people you see, and the controls reviewers use in a meeting.
           </p>
           <div className="prose-block">
             <p>
-              The extension lifecycle (<code>extension.py</code>) drives{" "}
-              <code>Simulation.update(dt)</code> on the Kit update loop.
-              Modules split cleanly: <code>scene</code> / <code>layout</code>{" "}
-              for venue discovery, <code>navigation</code> for NavMesh,{" "}
-              <code>fire</code> for placement and LOS, <code>ai</code> for the
-              decision interface, <code>ui</code> / <code>inspect</code> /{" "}
-              <code>viz</code> for operator tooling.
+              It owns the scene, walking paths, collision-style separation,
+              fire vision checks, and applying each person’s next intent. Large
+              AI models are deliberately kept out of that process so a typical
+              design laptop can keep rendering the terminal while inference
+              runs elsewhere — on another machine on the network or in the
+              cloud.
             </p>
             <p>
-              Responsibility split: Kit handles scene, USD sync, pathing,
-              collision/separation, perception, scheduling, and applying
-              intents. The SLM process handles only stateless batched intent
-              inference (and optional natural-language summaries). That keeps
-              a 4 GB laptop GPU free for rendering while inference runs on a
-              Mac, LAN host, or CUDA instance.
+              That split also matches how teams already think about Omniverse:
+              one place to author and review spatial design, with specialist
+              services plugged in for behavior rather than baked into the
+              viewport.
             </p>
           </div>
         </section>
 
         <section id="future" className="doc-section">
-          <p className="section-kicker">06 — Future prospects</p>
-          <h2 className="section-title">From symbolic perception to multimodal agents</h2>
+          <p className="section-kicker">08 — Future prospects</p>
+          <h2 className="section-title">Richer sensing, clearer reviews</h2>
           <p className="section-lead">
-            Today each agent reasons over a compact perception JSON. The next
-            leap is richer sensing and stronger models on the same batch
-            contract.
+            Today each person reasons over a short list of facts. The roadmap
+            adds vision, nuance, and reporting without changing the basic
+            “simulate, then discuss” loop.
           </p>
           <ul className="prospect-list">
             <li>
-              <h3>Vision-language models (Nemotron VL / Omni)</h3>
+              <h3>Vision models such as Nemotron</h3>
               <p>
-                Feed viewport or agent-eye frames into NVIDIA Nemotron
-                vision-language models (for example Nemotron Nano VL or
-                Nemotron Omni) so decisions can use visual context — smoke
-                density, blocked corridors, signage — instead of only boolean
-                FOV/LOS flags.
+                Use NVIDIA Nemotron vision-language models so decisions can
+                draw on what a person would actually see — smoke, blocked
+                corridors, signage — not only yes/no line-of-sight flags.
               </p>
             </li>
             <li>
-              <h3>Richer crowd behavior</h3>
+              <h3>More human crowd behavior</h3>
               <p>
-                Hesitation, following nearby people, and differentiated exit
-                choice under uncertainty, plus run analytics (time-to-seat,
-                egress times, exit usage) for design reviews.
+                Hesitation, following nearby people, and different exit choices
+                under uncertainty, plus session summaries (time to clear, which
+                exits were used) for stakeholders.
               </p>
             </li>
             <li>
-              <h3>Scale and polish</h3>
+              <h3>Larger scenarios and polish</h3>
               <p>
-                Larger batched crowds on cloud GPUs, fire/smoke VFX beyond the
-                placement cuboid, and packaged scenario templates for
-                concourse, gate holdroom, and arrivals hall.
+                Bigger crowds on cloud GPUs, more convincing fire and smoke in
+                the view, and ready-made templates for concourse, gate
+                holdroom, and arrivals hall reviews.
               </p>
             </li>
           </ul>
@@ -311,7 +391,7 @@ export default function Home() {
 
       <footer className="docs-footer">
         <div className="docs-footer-inner">
-          SimulCrowd technical docs · Omniverse Kit + crowd.agents + services/slm
+          SimulCrowd · airport terminal crowd simulation on NVIDIA Omniverse
         </div>
       </footer>
     </div>
